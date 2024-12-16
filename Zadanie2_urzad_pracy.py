@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import plotly.graph_objects as go
 
+from scipy.stats import pearsonr
 
 # dane
 
@@ -115,29 +116,57 @@ fig.update_layout(
 # Wyświetlenie wykresu
 fig.show()
 
+# correlations
 
-#model Liniowy
+corr, _ = pearsonr(dane['Liczba osob ktore znalazly prace'], dane['Liczba badanych bezrobotnych'])
+print("Korelacja zmiennych objasniających):\n", corr)
 
-Wynik_liniowy=sm.OLS(y_treningowe,X_treningowe).fit()
-print(Wynik_liniowy.summary())
+# wypisz wszystkie korelacje po koleji
+for i in dane.columns:
+    corr, _ = pearsonr(dane[i], dane['prawdopodobienstwo'])
+    # nazwa kolumny i corr
+    print(i, corr)
 
-X_testowe = sm.add_constant(X_testowe)
-y_predykcje=Wynik_liniowy.predict(X_testowe)
+# widzimy że mniej skorelowany z prawdopodobienstwem jest Wiek oraz silną korelację zmiennych objasniajacych
+# dlatego tworzymy nowy model z jedną zmienna wiek
+X_model_2 = dane[["Wiek bezrobotnych(lata)"]]
+X_model_2 = sm.add_constant(X_model_2)
+wynik_2 = sm.Logit(dane['prawdopodobienstwo'], X_model_2).fit()
+print(wynik_2.summary())
 
-fig = go.Figure(data=[go.Surface(z=y_predykcje, x=staz_pracy, y=wiek)])
-
-#Ustawienia etykiet
-fig.update_layout(
-    title="Interaktywny wykres regresji liniowej",
-    scene=dict(
-        xaxis_title="Średni staż pracy (lata)",
-        yaxis_title="Wiek bezrobotnych (lata)",
-        zaxis_title="Prawdopodobieństwo"
-    )
-)
-
-# Wyświetlenie wykresu
-fig.show()
+b0, b1 = wynik_2.params[0], wynik_2.params[1]
+# wzor funkcji sigmoid
+wiek = np.linspace(dane['Wiek bezrobotnych(lata)'].min(), dane['Wiek bezrobotnych(lata)'].max(), 100)
 
 
+# Obliczenie wartości prawdopodobieństwa z modelu regresji logistycznej dla wieku
+y = 1 / (1 + np.exp(-(b0 + b1 * wiek)))
 
+# Wykres funkcji sigmoid
+plt.plot(wiek, y, label="Funkcja sigmoidalna (Prawdopodobieństwo)", color="blue")
+
+# Scatter dla rzeczywistych wartości
+plt.scatter(dane['Wiek bezrobotnych(lata)'], dane['prawdopodobienstwo'], label="Rzeczywiste dane", color='orange',
+            alpha=0.7)
+
+# Oznaczenia wykresu
+plt.title("Prawdopodobieństwo znalezienia pracy w zależności od wieku")
+plt.xlabel("Wiek bezrobotnych (lata)")
+plt.ylabel("Prawdopodobieństwo")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# model liniowy z jedną zmienna objasiajaca
+X_model_3 = dane[["Wiek bezrobotnych(lata)"]]
+wynik_3 = sm.OLS(dane['prawdopodobienstwo'], X_model_3).fit()
+print(wynik_3.summary())
+
+plt.scatter(dane['Wiek bezrobotnych(lata)'], dane['prawdopodobienstwo'], label="Rzeczywiste dane", color='orange',  alpha=0.7)
+plt.plot(X_model_3, wynik_3.predict(X_model_3), label="Regresja liniowa", color="red")
+plt.title("Regresja liniowa zmiennej objasniajaca")
+plt.xlabel("Wiek bezrobotnych (lata)")
+plt.ylabel("Prawdopodobieństwo")
+plt.legend()
+plt.grid(True)
+plt.show()
