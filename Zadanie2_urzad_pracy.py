@@ -35,22 +35,29 @@ print(dane.head())
 X = dane[["Sredni staz pracy (lata)", "Wiek bezrobotnych(lata)"]]
 # dodaj "Wiek bezrobotnych(lata)" do X
 
-
+dane['logity']=dane['prawdopodobienstwo']/(1-dane['prawdopodobienstwo'])
+dane['logity']=np.log(dane['logity'])
+print(dane['logity'])
+dane['logity_2']=1/(1+np.exp(-dane['logity']))
 
 # podziel dane na uczące i testowe
-X_treningowe, X_testowe, y_treningowe, y_testowe = train_test_split(X, dane['prawdopodobienstwo'], test_size=0.2, random_state=42)
+X_treningowe, X_testowe, y_treningowe, y_testowe = train_test_split(X, dane['logity'], test_size=0.2, random_state=42)
+
+y_treningowe_exp=1/(1+np.exp(-y_treningowe))
+y_testowe_exp=1/(1+np.exp(-y_testowe))
 
 print(y_treningowe)
 
-print(X_treningowe.head())
+print(y_treningowe_exp.head())
 
 X_treningowe=sm.add_constant(X_treningowe)
 
-wynik= sm.Logit(y_treningowe, X_treningowe).fit()
+
+
+wynik= sm.Logit(y_treningowe_exp, X_treningowe).fit()
 print(wynik.summary())
+
 X_testowe = sm.add_constant(X_testowe)
-
-
 y_predykcje=wynik.predict(X_testowe)
 
 print(y_predykcje)
@@ -58,7 +65,6 @@ print(y_testowe)
 
 
 zdarzenie_przeciwne=dane['prawdopodobienstwo']/(1-dane['prawdopodobienstwo'])
-
 # logarytm naturalny z zdarzenie_przeciwne
 log= np.log(zdarzenie_przeciwne)
 print(log)
@@ -97,8 +103,8 @@ staz_pracy, wiek = np.meshgrid(staz_pracy, wiek)
 # Obliczenie prawdopodobieństwa z funkcji logistycznej
 # logit = b0 + b1 * staz_pracy + b2 * wiek
 # prawdopodobieństwo = 1 / (1 + exp(-logit))
-logit = b0 + b1 * staz_pracy + b2 * wiek
-prawdopodobienstwo = 1 / (1 + np.exp(-logit))
+log = b0 + b1 * staz_pracy + b2 * wiek
+prawdopodobienstwo = 1 / (1 + np.exp(-log))
 
 # Tworzenie wykresu 3D
 fig = go.Figure(data=[go.Surface(z=prawdopodobienstwo, x=staz_pracy, y=wiek)])
@@ -123,50 +129,55 @@ print("Korelacja zmiennych objasniających):\n", corr)
 
 # wypisz wszystkie korelacje po koleji
 for i in dane.columns:
-    corr, _ = pearsonr(dane[i], dane['prawdopodobienstwo'])
+    corr, _ = pearsonr(dane[i], dane['logity'])
     # nazwa kolumny i corr
     print(i, corr)
 
 # widzimy że mniej skorelowany z prawdopodobienstwem jest Wiek oraz silną korelację zmiennych objasniajacych
 # dlatego tworzymy nowy model z jedną zmienna wiek
-X_model_2 = dane[["Wiek bezrobotnych(lata)"]]
+X_model_2 = X_treningowe[["Wiek bezrobotnych(lata)"]]
 X_model_2 = sm.add_constant(X_model_2)
-wynik_2 = sm.Logit(dane['prawdopodobienstwo'], X_model_2).fit()
+wynik_2 = sm.Logit(y_treningowe_exp, X_model_2).fit()
 print(wynik_2.summary())
+
+X_testowe_wiek = sm.add_constant(X_testowe[["Wiek bezrobotnych(lata)"]])
+y_predykcje_2 = wynik_2.predict(X_testowe_wiek)
+
+print(y_predykcje_2)
 
 b0, b1 = wynik_2.params[0], wynik_2.params[1]
 # wzor funkcji sigmoid
-wiek = np.linspace(dane['Wiek bezrobotnych(lata)'].min(), dane['Wiek bezrobotnych(lata)'].max(), 100)
+wynik_funkcji = 1 / (1 + np.exp(-b0 - b1 * dane['Wiek bezrobotnych(lata)']))
 
+# regresja logistyczna
 
-# Obliczenie wartości prawdopodobieństwa z modelu regresji logistycznej dla wieku
-y = 1 / (1 + np.exp(-(b0 + b1 * wiek)))
-
-# Wykres funkcji sigmoid
-plt.plot(wiek, y, label="Funkcja sigmoidalna (Prawdopodobieństwo)", color="blue")
-
+plt.plot(dane['Wiek bezrobotnych(lata)'], wynik_funkcji, label="Regresja logistyczna")
 # Scatter dla rzeczywistych wartości
-plt.scatter(dane['Wiek bezrobotnych(lata)'], dane['prawdopodobienstwo'], label="Rzeczywiste dane", color='orange',
+plt.scatter(dane['Wiek bezrobotnych(lata)'], dane['logity_2'], label="Rzeczywiste dane", color='orange',
             alpha=0.7)
 
 # Oznaczenia wykresu
-plt.title("Prawdopodobieństwo znalezienia pracy w zależności od wieku")
+plt.title("logity znalezienia pracy w zależności od wieku")
 plt.xlabel("Wiek bezrobotnych (lata)")
-plt.ylabel("Prawdopodobieństwo")
+plt.ylabel("logity")
+# Ustawienie zakresu osi Y od 0 do 1
+plt.ylim(0, 1)
 plt.legend()
 plt.grid(True)
 plt.show()
 
 # model liniowy z jedną zmienna objasiajaca
-X_model_3 = dane[["Wiek bezrobotnych(lata)"]]
-wynik_3 = sm.OLS(dane['prawdopodobienstwo'], X_model_3).fit()
-print(wynik_3.summary())
+X_model_3=sm.add_constant(dane["Wiek bezrobotnych(lata)"])
 
-plt.scatter(dane['Wiek bezrobotnych(lata)'], dane['prawdopodobienstwo'], label="Rzeczywiste dane", color='orange',  alpha=0.7)
-plt.plot(X_model_3, wynik_3.predict(X_model_3), label="Regresja liniowa", color="red")
+wynik_3 = sm.OLS(dane['logity'], X_model_3).fit()
+print(wynik_3.summary())
+plt.scatter(dane['Wiek bezrobotnych(lata)'], dane['logity'], label="Rzeczywiste dane", color='orange')
+plt.plot(dane[["Wiek bezrobotnych(lata)"]], wynik_3.predict(X_model_3), label="Regresja liniowa", color="red")
 plt.title("Regresja liniowa zmiennej objasniajaca")
 plt.xlabel("Wiek bezrobotnych (lata)")
-plt.ylabel("Prawdopodobieństwo")
+plt.ylabel("logity")
 plt.legend()
 plt.grid(True)
 plt.show()
+
+
