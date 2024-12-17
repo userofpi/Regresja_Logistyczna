@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce1f2c9e-de87-46b9-ad16-281bd18d0440" name="Changes" comment="">
+    <list default="true" id="ce1f2c9e-de87-46b9-ad16-281bd18d0440" name="Changes" comment="grande finale">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Zadanie2_urzad_pracy.py" beforeDir="false" afterPath="$PROJECT_DIR$/Zadanie2_urzad_pracy.py" afterDir="false" />
     </list>
@@ -128,7 +128,7 @@
       <workItem from="1734257137892" duration="3585000" />
       <workItem from="1734264028164" duration="16655000" />
       <workItem from="1734362621262" duration="3596000" />
-      <workItem from="1734446412370" duration="6390000" />
+      <workItem from="1734446412370" duration="7733000" />
     </task>
     <task id="LOCAL-00001" summary="V0">
       <option name="closed" value="true" />
@@ -202,7 +202,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734366333622</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="grande finale">
+      <option name="closed" value="true" />
+      <created>1734453764289</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1734453764289</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -215,6 +223,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="grande finale" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Regresja_Logistyczna$Zadanie2_urzad_pracy.coverage" NAME="Zadanie2_urzad_pracy Coverage Results" MODIFIED="1734453284668" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Regresja_Logistyczna$Zadanie2_urzad_pracy.coverage" NAME="Zadanie2_urzad_pracy Coverage Results" MODIFIED="1734454623736" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

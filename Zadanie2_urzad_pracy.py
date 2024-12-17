@@ -180,4 +180,45 @@ plt.legend()
 plt.grid(True)
 plt.show()
 
+# wykres dwoch zmiennych objasniajacych liniowy
+X_treningowe_2_lin = sm.add_constant(X_treningowe)
+wynik_lin = sm.OLS(y_treningowe, X_treningowe_2_lin).fit()
+print(wynik_lin.summary())
 
+
+
+# Tworzenie siatki wartości (staż pracy i wiek)
+staz_pracy = np.linspace(dane['Sredni staz pracy (lata)'].min(), dane['Sredni staz pracy (lata)'].max(), 50)
+wiek = np.linspace(dane['Wiek bezrobotnych(lata)'].min(), dane['Wiek bezrobotnych(lata)'].max(), 50)
+staz_pracy, wiek = np.meshgrid(staz_pracy, wiek)
+
+# Wyciągnięcie współczynników z regresji liniowej
+b0, b1, b2 = wynik_lin.params[0], wynik_lin.params[1], wynik_lin.params[2]
+
+# Obliczenie wartości funkcji liniowej
+z = b0 + b1 * staz_pracy + b2 * wiek  # Płaszczyzna funkcji liniowej
+
+# 1. Wykres 2D z matplotlib – funkcja liniowa tylko względem jednej zmiennej (np. wiek)
+plt.plot(dane['Wiek bezrobotnych(lata)'], b0 + b2 * dane['Wiek bezrobotnych(lata)'], label="Regresja liniowa (2D)")
+plt.title("Funkcja liniowa (2D) zależność od wieku")
+plt.xlabel("Wiek bezrobotnych (lata)")
+plt.ylabel("Wartość funkcji liniowej")
+plt.ylim(0, 1)  # Ograniczenie osi Y opcjonalne
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# 2. Wykres 3D z plotly – funkcja liniowa (płaszczyzna regresji)
+fig = go.Figure(data=[go.Surface(z=z, x=staz_pracy, y=wiek)])
+
+# Ustawienia wykresu
+fig.update_layout(
+    title="Płaszczyzna regresji liniowej w 3D",
+    scene=dict(
+        xaxis_title="Średni staż pracy (lata)",
+        yaxis_title="Wiek bezrobotnych (lata)",
+        zaxis_title="Prawodobodobieństwo znaleznienia pracy",
+        zaxis=dict(range=[z.min(), z.max()])  # Skalowanie Z bazowe na wartościach regresji
+    )
+)
+fig.show()
