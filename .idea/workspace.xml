@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce1f2c9e-de87-46b9-ad16-281bd18d0440" name="Changes" comment="grande finale">
+      <change afterPath="$PROJECT_DIR$/Zadanie4_platki.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Zadanie3_liczba_awarii.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Zadanie3_liczba_awarii.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +131,8 @@
       <workItem from="1734446412370" duration="7811000" />
       <workItem from="1734455431160" duration="1495000" />
       <workItem from="1734513843254" duration="172000" />
-      <workItem from="1734623077403" duration="9300000" />
+      <workItem from="1734623077403" duration="10771000" />
+      <workItem from="1734693600239" duration="2717000" />
     </task>
     <task id="LOCAL-00001" summary="V0">
       <option name="closed" value="true" />
