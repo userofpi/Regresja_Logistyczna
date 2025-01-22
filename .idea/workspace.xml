@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce1f2c9e-de87-46b9-ad16-281bd18d0440" name="Changes" comment="Update paths and analysis script for calorie prediction&#10;&#10;Updated SDK paths in project setup and refined script for calorie prediction using OLS regression. Added calculations for error metrics, validation predictions, and visualizations to enhance analysis accuracy.">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ZAD2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ZAD2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platki_dane_zad4.csv" beforeDir="false" afterPath="$PROJECT_DIR$/platki_dane_zad4.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Zadanie4_platki.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Zadanie4_platki.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,6 +159,11 @@
       <workItem from="1736460703135" duration="5482000" />
       <workItem from="1736610285161" duration="139000" />
       <workItem from="1736801034199" duration="1423000" />
+      <workItem from="1736807348987" duration="737000" />
+      <workItem from="1736933807239" duration="6063000" />
+      <workItem from="1737119974347" duration="840000" />
+      <workItem from="1737121054594" duration="354000" />
+      <workItem from="1737239018216" duration="18000" />
     </task>
     <task id="LOCAL-00001" summary="V0">
       <option name="closed" value="true" />
@@ -367,7 +373,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736413403405</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Update paths and analysis script for calorie prediction&#10;&#10;Updated SDK paths in project setup and refined script for calorie prediction using OLS regression. Added calculations for error metrics, validation predictions, and visualizations to enhance analysis accuracy.">
+      <option name="closed" value="true" />
+      <created>1736807355803</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1736807355803</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
